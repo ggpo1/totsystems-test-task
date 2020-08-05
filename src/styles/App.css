@@ -23,7 +23,7 @@
 .required-chat-wrapper {
   display: flex;
   width: 60%;
-  background: snow;
+  /* background: snow; */
   -webkit-box-shadow: 0px -4px 18px -7px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px -4px 18px -7px rgba(0, 0, 0, 0.75);
   box-shadow: 0px -4px 18px -7px rgba(0, 0, 0, 0.75);

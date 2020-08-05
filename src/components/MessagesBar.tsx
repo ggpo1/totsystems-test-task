@@ -29,7 +29,7 @@ class MessagesBar extends Component<IMessagesBarProps, IMessagesBarState> {
 
     render() {
         const { selectedPage } = this.state;
-        console.log('re-render');
+        // console.log('re-render: ' + selectedPage);
 
         return (
             <div className={'mb-wrapper'}>
@@ -45,12 +45,12 @@ class MessagesBar extends Component<IMessagesBarProps, IMessagesBarState> {
 
 function MessagesBarSelector(props: IMessagesBarSelectorProps) {
     const [pages] = useState<Array<ISelectorPage>>(props.pages),
-        [selectedPage, setSelectedPage] = useState(props.selectedPage);
-        let [prevSelectedPage, setPrevSelectedPage] = useState<string>('');
+        [selectedPage, setSelectedPage] = useState(props.selectedPage),
+        [prevSelectedPage, setPrevSelectedPage] = useState<string>('');
         // [selectAction] = useState(props.selectAction)
-
+        // console.log(selectedPage);
     if (selectedPage !== prevSelectedPage) {
-        console.log('123');
+        
         setSelectedPage(props.selectedPage);
         setPrevSelectedPage(props.selectedPage);
     }
@@ -62,7 +62,7 @@ function MessagesBarSelector(props: IMessagesBarSelectorProps) {
             key={el.key}
             className={'md-selector-title'}
             style={{ color: selectedPage === el.key ? 'black' : '#e5e5e5' }}
-            onClick={() => props.selectAction(el.key)}
+            onClick={() => { setSelectedPage(el.key); props.selectAction(el.key) }}
         >
             {el.title}
         </div>
@@ -80,7 +80,7 @@ function MessagesBarSelector(props: IMessagesBarSelectorProps) {
 function BarMessage() {
     return (
         <div className={'mb-message-wrapper'}>
-
+            
         </div>
     );
 }

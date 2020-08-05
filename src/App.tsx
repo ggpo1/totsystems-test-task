@@ -1,18 +1,20 @@
 import React from 'react';
 import './styles/App.css';
 import MessagesBar from './components/MessagesBar';
+import ChatFlow from './components/ChatFlow';
+import { RequiredChatData, FloodChatData } from './data/ChatFlowsData';
 
 function App() {
   return (
     <div className="App">
       <div className={'required-chat-wrapper'}>
-        work
+        <ChatFlow source={RequiredChatData} bgColor={'snow'} />
       </div>
       <div className={'app-mb-wrapper'}>
         <MessagesBar />
       </div>
       <div className={'not-required-chat-wrapper'}>
-        flood
+        <ChatFlow source={FloodChatData} bgColor={'#d2bba2'} />
       </div>
     </div>
   );

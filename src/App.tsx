@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <div className={'required-chat-wrapper'}>
-        <ChatFlow source={RequiredChatData} bgColor={'snow'} />
+        <ChatFlow source={RequiredChatData} bgColor={'#2b486a'} />
       </div>
       <div className={'app-mb-wrapper'}>
         <MessagesBar />

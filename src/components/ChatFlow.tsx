@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import IChat from './../models/IChat';
 
 import '../styles/ChatFlow.css';
+import IMessage from './../models/IMessage';
 
 interface IChatFlowProps {
     source: IChat,
@@ -26,6 +27,7 @@ class ChatFlow extends Component<IChatFlowProps, IChatFlowState> {
         return (
             <div style={{ background: bgColor }} className={'chat-flow-wrapper'}>
                 <ChatFlowTitle title={source.title} />
+                <ChatFlowMessages messages={source.messages} />
             </div>
         );
     }
@@ -40,6 +42,25 @@ function ChatFlowTitle(props: IChatFlowTitleProps) {
 
     return (
         <div className={'chat-title-block'}>{props.title}</div>
+    );
+}
+
+interface IChatFlowMessagesProps {
+    messages: Array<IMessage>
+}
+
+function ChatFlowMessages(props: IChatFlowMessagesProps) {
+    const [messages] = useState<Array<IMessage>>(props.messages);
+
+    let messageBlocks: Array<JSX.Element> = [];
+    messages.forEach(el => messageBlocks.push(
+        <div key={el.key} className={'chat-message'}>{el.message}</div>
+    ));
+
+    return (
+        <div className={'chat-flow-messages-wrapper'}>
+            {messageBlocks}
+        </div>
     );
 }
 

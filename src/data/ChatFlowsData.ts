@@ -1,4 +1,5 @@
 import IChat from './../models/IChat';
+import user from './UsersData';
 
 export const RequiredChatData: IChat = {
     key: 'required_work_chat',
@@ -7,13 +8,17 @@ export const RequiredChatData: IChat = {
     messages: [
         {
             key: 'message_0',
-            userKey: 'user_0',
-            message: 'Hello!)'
+            user: user,
+            message: 'Hello!)',
+            chatKey: 'required_work_chat',
+            chatName: 'General Work Chat'
         },
         {
             key: 'message_0',
-            userKey: 'user_0',
-            message: 'How do you do?'
+            user: user,
+            message: 'How is your task?',
+            chatKey: 'required_work_chat',
+            chatName: 'General Work Chat'
         },
     ]
 };
@@ -25,13 +30,17 @@ export const FloodChatData: IChat = {
     messages: [
         {
             key: 'message_0',
-            userKey: 'user_0',
-            message: 'Hello!)'
+            user: user,
+            message: 'Hello!)',
+            chatKey: 'flood_chat',
+            chatName: 'Flood Chat:)'
         },
         {
             key: 'message_0',
-            userKey: 'user_0',
-            message: 'How do you do?'
+            user: user,
+            message: 'How do you do?',
+            chatKey: 'flood_chat',
+            chatName: 'Flood Chat:)'
         },
     ]
 };

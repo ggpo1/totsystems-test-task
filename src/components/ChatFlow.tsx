@@ -28,6 +28,7 @@ class ChatFlow extends Component<IChatFlowProps, IChatFlowState> {
             <div style={{ background: bgColor }} className={'chat-flow-wrapper'}>
                 <ChatFlowTitle title={source.title} />
                 <ChatFlowMessages messages={source.messages} />
+                <ChatFlowTextBox />
             </div>
         );
     }
@@ -38,10 +39,8 @@ interface IChatFlowTitleProps {
 }
 
 function ChatFlowTitle(props: IChatFlowTitleProps) {
-
-
     return (
-        <div className={'chat-title-block'}>{props.title}</div>
+        <div className={'chat-title-block'}>{props.title.toUpperCase()}</div>
     );
 }
 
@@ -54,12 +53,28 @@ function ChatFlowMessages(props: IChatFlowMessagesProps) {
 
     let messageBlocks: Array<JSX.Element> = [];
     messages.forEach(el => messageBlocks.push(
-        <div key={el.key} className={'chat-message'}>{el.message}</div>
+        <div key={el.key} className={'chat-message-block'}>
+            <div style={{ width: 'auto' }} className={'chat-message'}>
+                <div>{el.user.login}</div>
+                <div>{el.message}</div>
+            </div>
+        </div>
     ));
 
     return (
         <div className={'chat-flow-messages-wrapper'}>
             {messageBlocks}
+        </div>
+    );
+}
+
+function ChatFlowTextBox() {
+    return (
+        <div className={'cf-text-box'}>
+            <input className={'input-text-box'} placeholder={'Write your message...'} type="text" />
+            <div className={'input-send-button-block'}>
+                <input className={'input-send-button'} type="button" value="отправить" />
+            </div>
         </div>
     );
 }

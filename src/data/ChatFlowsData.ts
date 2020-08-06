@@ -14,7 +14,7 @@ export const RequiredChatData: IChat = {
             chatName: 'General Work Chat'
         },
         {
-            key: 'message_0',
+            key: 'message_1',
             user: user,
             message: 'How is your task?',
             chatKey: 'required_work_chat',
@@ -36,7 +36,7 @@ export const FloodChatData: IChat = {
             chatName: 'Flood Chat:)'
         },
         {
-            key: 'message_0',
+            key: 'message_1',
             user: user,
             message: 'How do you do?',
             chatKey: 'flood_chat',

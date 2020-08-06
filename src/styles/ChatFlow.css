@@ -66,6 +66,10 @@
     padding-bottom: 5px;
 }
 
+.chat-message > div:last-child {
+    color: gray;
+}
+
 .cf-text-box {
     display: flex;
     justify-content: space-between;

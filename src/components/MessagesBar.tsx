@@ -36,7 +36,7 @@ class MessagesBar extends Component<IMessagesBarProps, IMessagesBarState> {
         let selectedPageObj = source.pages.filter(page => page.key === selectedPage)[0];
         let pageLastMessages: Array<JSX.Element> = [];
         selectedPageObj.lastMessages.forEach(el => pageLastMessages.push(
-            <div className={'mb-message'}>
+            <div key={el.key} className={'mb-message'}>
                 <div style={{ color: '#4f76a6' }}>{el.chatName}</div>
                 <div><span>{el.user.login}: </span><span> {el.message}</span></div>
             </div>

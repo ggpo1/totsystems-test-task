@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './styles/App.css';
 import MessagesBar from './components/MessagesBar';
 import ChatFlow from './components/ChatFlow';
-import { RequiredChatData, FloodChatData } from './data/ChatFlowsData';
+import { ChatsData } from './data/ChatFlowsData';
 import MessagesBarSource from './data/MessagesBarSelectorPages';
 import {
   Switch,
@@ -11,30 +11,61 @@ import {
 } from "react-router-dom";
 import { me } from './data/UsersData';
 import IMessage from './models/IMessage';
+import ChatType from './models/enums/ChatType';
+import IMessagesBar from './models/IMessagesBar';
 
 function App() {
-  const [requiredChatData, setRequiredChatData] = useState(RequiredChatData);
-  const [floodChatData, setFloodChatData] = useState(FloodChatData);
+  const [chatsData, setChatsData] = useState(ChatsData);
+  const [selectedChatKey, setSelectedChatKey] = useState(chatsData[0].key);
+  const [updateNum, setUpdateNum] = useState(0); // The way is in react doc (like forceUpdate method)
+
 
   let history = useHistory();
 
   let sendAction = (message: IMessage) => {
-    switch (message.chatKey) {
-      case 'required_work_chat': {
-        let chat = requiredChatData;
+    let chData = chatsData;
+    chData.map(chat => {
+      if (chat.key === message.chatKey) {
         chat.messages.push(message);
-        setRequiredChatData(chat);
-        break;
+        return chat
       }
-      case 'flood_chat': {
-        let chat = floodChatData;
-        chat.messages.push(message);
-        setFloodChatData(chat);
-        break;
-      }
-      default:
-        break;
-    }
+      return chat;
+    });
+
+    setChatsData(chData);
+    setUpdateNum(updateNum + 1);
+
+  }
+
+  let openChat = (chatKey: string) => {
+    setSelectedChatKey(chatKey);
+  }
+
+  let selectedChat = chatsData.filter(chat => chat.key === selectedChatKey)[0];
+
+
+  let personalChatsLastMessages: Array<IMessage> = [],
+  groupChatsLastMessages: Array<IMessage> = [];
+
+  chatsData.filter(chat => chat.type === ChatType.PERSONAL).forEach(el => personalChatsLastMessages.push(el.messages[el.messages.length - 1]));
+  chatsData.filter(chat => chat.type === ChatType.GROUP).forEach(el => groupChatsLastMessages.push(el.messages[el.messages.length - 1]));
+
+  console.log(personalChatsLastMessages);
+  console.log(groupChatsLastMessages);
+  
+  let messagesBarSource: IMessagesBar = {
+    pages: [
+      {
+        key: 'selector_chats_groups',
+        title: 'groups',
+        lastMessages: groupChatsLastMessages
+      },
+      {
+        key: 'selector_chats_personal',
+        title: 'personal',
+        lastMessages: personalChatsLastMessages
+      },
+    ]
   }
 
   return (
@@ -42,14 +73,14 @@ function App() {
       <Route path="/board">
         <div className="App">
           <div className={'required-chat-wrapper'}>
-            <ChatFlow sendAction={sendAction} userInfo={me} source={requiredChatData} bgColor={'#4f76a6'} />
+            <ChatFlow sendAction={sendAction} userInfo={me} source={selectedChat} bgColor={'#4f76a6'} />
           </div>
           <div className={'app-mb-wrapper'}>
-            <MessagesBar source={MessagesBarSource} />
+            <MessagesBar openAction={openChat} source={messagesBarSource} />
           </div>
-          <div className={'not-required-chat-wrapper'}>
-            <ChatFlow sendAction={sendAction} userInfo={me} source={floodChatData} bgColor={'#4f76a6'} />
-          </div>
+          {/* <div className={'not-required-chat-wrapper'}>
+            <ChatFlow sendAction={sendAction} userInfo={me} source={selectedChat} bgColor={'#4f76a6'} />
+          </div> */}
         </div>
       </Route>
       <Route path="/">

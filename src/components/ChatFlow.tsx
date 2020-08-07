@@ -53,6 +53,7 @@ class ChatFlow extends Component<IChatFlowProps, IChatFlowState> {
 
     render() {
         const { source, bgColor } = this.state;
+        if (source === undefined) return null;
 
         return (
             <div style={{ background: bgColor }} className={'chat-flow-wrapper'}>
@@ -79,10 +80,10 @@ interface IChatFlowMessagesProps {
 }
 
 function ChatFlowMessages(props: IChatFlowMessagesProps) {
-    const [messages] = useState<Array<IMessage>>(props.messages);
+    // const [messages] = useState<Array<IMessage>>(props.messages);
 
     let messageBlocks: Array<JSX.Element> = [];
-    messages.forEach(el => messageBlocks.push(
+    props.messages.forEach(el => messageBlocks.push(
         <div key={el.key} className={'chat-message-block'}>
             <div style={{ width: 'auto' }} className={'chat-message'}>
                 <div>{el.user.login}</div>

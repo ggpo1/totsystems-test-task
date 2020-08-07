@@ -3,7 +3,6 @@ import React, { Component, useState } from 'react';
 import '../styles/MessagesBar.css';
 import IBarPage from '../models/IBarPage';
 import IMessagesBar from '../models/IMessagesBar';
-import IMessage from '../models/IMessage';
 
 
 interface IMessagesBarSelectorProps {

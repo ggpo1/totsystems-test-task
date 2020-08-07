@@ -1,6 +1,6 @@
 import IUser from "../models/IUser";
 
-export const me: IUser = {
+export let me: IUser = {
     key: 'user_1',
     login: 'frontender',
     role: ''

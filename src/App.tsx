@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/App.css';
 import MessagesBar from './components/MessagesBar';
 import ChatFlow from './components/ChatFlow';
 import { ChatsData } from './data/ChatFlowsData';
-import MessagesBarSource from './data/MessagesBarSelectorPages';
 import {
   Switch,
   Route,
@@ -16,8 +15,17 @@ import IMessagesBar from './models/IMessagesBar';
 
 function App() {
   const [chatsData, setChatsData] = useState(ChatsData);
-  const [selectedChatKey, setSelectedChatKey] = useState(chatsData[0].key);
+  const [selectedChatKey, setSelectedChatKey] = useState('');
   const [updateNum, setUpdateNum] = useState(0); // The way is in react doc (like forceUpdate method)
+
+  useEffect(() => {
+    // Обновляем заголовок документа с помощью API браузера
+    // document.title = `хуй`;
+
+    if (localStorage.chatsData !== undefined) {
+      setChatsData(JSON.parse(localStorage.chatsData));
+    }
+  }, []);
 
 
   let history = useHistory();
@@ -27,14 +35,29 @@ function App() {
     chData.map(chat => {
       if (chat.key === message.chatKey) {
         chat.messages.push(message);
-        return chat
+        return chat;
       }
       return chat;
     });
 
     setChatsData(chData);
     setUpdateNum(updateNum + 1);
+    localStorage.chatsData = JSON.stringify(chData);
+  }
 
+  let deleteAction = (message: IMessage) => {
+    let chData = chatsData;
+    chData.map(chat => {
+      if (chat.key === message.chatKey) {
+        chat.messages = chat.messages.filter(msEl => msEl.key !== message.key);
+        return chat;
+      }
+      return chat;
+    });
+
+    setChatsData(chData);
+    setUpdateNum(updateNum + 1);
+    localStorage.chatsData = JSON.stringify(chData);
   }
 
   let openChat = (chatKey: string) => {
@@ -49,9 +72,6 @@ function App() {
 
   chatsData.filter(chat => chat.type === ChatType.PERSONAL).forEach(el => personalChatsLastMessages.push(el.messages[el.messages.length - 1]));
   chatsData.filter(chat => chat.type === ChatType.GROUP).forEach(el => groupChatsLastMessages.push(el.messages[el.messages.length - 1]));
-
-  console.log(personalChatsLastMessages);
-  console.log(groupChatsLastMessages);
   
   let messagesBarSource: IMessagesBar = {
     pages: [
@@ -73,7 +93,7 @@ function App() {
       <Route path="/board">
         <div className="App">
           <div className={'required-chat-wrapper'}>
-            <ChatFlow sendAction={sendAction} userInfo={me} source={selectedChat} bgColor={'#4f76a6'} />
+            <ChatFlow deleteAction={deleteAction} sendAction={sendAction} userInfo={me} source={selectedChat} bgColor={'#4f76a6'} />
           </div>
           <div className={'app-mb-wrapper'}>
             <MessagesBar openAction={openChat} source={messagesBarSource} />

@@ -4,12 +4,14 @@ import IChat from './../models/IChat';
 import '../styles/ChatFlow.css';
 import IMessage from './../models/IMessage';
 import IUser from '../models/IUser';
+import { me } from '../data/UsersData';
 
 interface IChatFlowProps {
     source: IChat,
     bgColor: string,
     userInfo: IUser,
-    sendAction: any
+    sendAction: any,
+    deleteAction: any
 }
 
 interface IChatFlowState {
@@ -18,6 +20,7 @@ interface IChatFlowState {
     textMessage: string,
     userInfo: IUser,
     sendAction: any,
+    deleteAction: any,
     lastMessage?: IMessage
 }
 
@@ -52,13 +55,21 @@ class ChatFlow extends Component<IChatFlowProps, IChatFlowState> {
     }
 
     render() {
-        const { source, bgColor } = this.state;
-        if (source === undefined) return null;
+        const { source, bgColor, deleteAction } = this.state;
+        if (source === undefined) return (<div 
+            style={{ 
+                display: 'flex', 
+                width: '100%', 
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: 'gray',
+                fontSize: '16pt'
+            }}>select a chat...</div>);
 
         return (
             <div style={{ background: bgColor }} className={'chat-flow-wrapper'}>
                 <ChatFlowTitle title={source.title} />
-                <ChatFlowMessages messages={source.messages} />
+                <ChatFlowMessages deleteAction={deleteAction} messages={source.messages} />
                 <ChatFlowTextBox sendAction={this.sendMessageAction} />
             </div>
         );
@@ -76,7 +87,8 @@ function ChatFlowTitle(props: IChatFlowTitleProps) {
 }
 
 interface IChatFlowMessagesProps {
-    messages: Array<IMessage>
+    messages: Array<IMessage>,
+    deleteAction: any
 }
 
 function ChatFlowMessages(props: IChatFlowMessagesProps) {
@@ -84,9 +96,12 @@ function ChatFlowMessages(props: IChatFlowMessagesProps) {
 
     let messageBlocks: Array<JSX.Element> = [];
     props.messages.forEach(el => messageBlocks.push(
-        <div key={el.key} className={'chat-message-block'}>
+        <div key={el.key} style={{ justifyContent: el.user.key === me.key ? 'flex-end' : 'flex-start' }} className={'chat-message-block'}>
             <div style={{ width: 'auto' }} className={'chat-message'}>
-                <div>{el.user.login}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {el.user.login}
+                    {el.user.key === me.key && <span onClick={() => props.deleteAction(el)} className={'message-delete-button'}>удалить</span>}
+                </div>
                 <div>{el.message}</div>
             </div>
         </div>
